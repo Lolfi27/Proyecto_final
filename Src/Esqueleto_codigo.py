@@ -1,3 +1,4 @@
+# Ingresar la cantidad total de objetos:
 objetos_a_registrar = int(input("Cuantos objetos se van a registrar"))
 # Variables de input
 objetos_frios = int(input("Cuantos objetos almacenados en frio habra?"))
@@ -6,6 +7,8 @@ objetos_enlatados = int(input("Cuantos enlatados habra?"))
 objetos_limpieza = int(input("Cuantos objetos de limpieza habra?"))
 objetos_mascotas = int(input("Cuantos objetos de mascotas habra?"))
 objetos_calientes = int(input("Cuantos objetos calientes habra?"))
+
+# Aqui se ponen otras variables
 
 # Sistema de separación y conteo individual por tipo de objeto
 # Aqui se separa cada objeto de cada categoria para un control más preciso
