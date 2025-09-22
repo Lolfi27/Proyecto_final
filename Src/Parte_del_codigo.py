@@ -20,12 +20,20 @@ def agregar_inventario():
             print("\n¡Sus productos fueron registrados exitosamente!")
     return inventario
 
-def suma_por_categoria(inventario):
-    suma_total = {}
+def suma(inventario):
     categorias = ["frios", "snacks", "enlatados", "limpieza", "mascotas", "calientes"]
+    
     for categoria in categorias:
-        suma = 0
+        suma_total = 0
         for producto in inventario[categoria]:
-            suma += producto["cantidad"]
-        suma_total[categoria] = suma
-    return suma_total
+            suma_total += producto["cantidad"]
+        
+        print("Categoria:", categoria)
+        print("Suma total:", suma_total)
+        
+        productos = inventario[categoria]
+        if len(productos) == 0:
+            print("No hay productos registrados")
+        else:
+            for producto in productos:
+                print(f"- {producto['nombre']}: {producto['cantidad']}")
