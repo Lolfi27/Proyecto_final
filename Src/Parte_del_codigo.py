@@ -5,47 +5,27 @@ def agregar_inventario():
 
     for categoria in categorias:
         try:
-            cantidad = int(input("\nCuantos productos de " + categoria + " quiere registrar: "))
+            cantidad = int(input(f"\nCuantos productos de \"{categoria}\" quiere registrar: "))
         except ValueError:
             cantidad = 0
         inventario[categoria] = []  
-        for i in range(cantidad):
-            nombre = input("\nNombre del producto:")
-            try:
-                piezas = int(input("Cantidad: "))
-            except ValueError:
-                piezas = 0
-#VERIFICAR DÍA
-            while True:
+        if cantidad > 0:
+            for i in range(cantidad):
+                nombre = input("\nNombre del producto: ")
                 try:
-                    d = int(input("Día de registro del producto (1-31): "))
-                    if 1 <= d <= 31:
-                        return d
-                    else:
-                        print("El dia tiene que estar entre 1-31")
+                    piezas = int(input("Cantidad: "))
                 except ValueError:
-                    print("Por favor, ingrese solo numeros enteros")
-#VERIFICAR MES
-            while True:
-                try:
-                    m = int(input("Mes de registro del producto (1-12): "))
-                    if 1 <= m <= 12:
-                        return m
-                    else:
-                        print("El mes tiene que estar entre 1 y 12")
-                except ValueError:
-                    print("Por favor, ingrese solo numeros enteros")
-#VERIFICAR AÑO
-            while True:
-                try:
-                    a = int(input("Año de registro del producto: "))
-                    if a > 0:
-                        return a
-                    else:
-                        print("El año tiene que ser mayor a 0")
-                except ValueError:
-                    print("Por favor, ingrese solo numeros enteros")
-                
-            inventario[categoria].append({"nombre": nombre, "cantidad": piezas, "fecha": (d, m, a)})
+                    piezas = 0
+                inventario[categoria].append({"nombre": nombre, "cantidad": piezas})
             print("\n¡Sus productos fueron registrados exitosamente!")
     return inventario
+
+def suma_por_categoria(inventario):
+    suma_total = {}
+    categorias = ["frios", "snacks", "enlatados", "limpieza", "mascotas", "calientes"]
+    for categoria in categorias:
+        suma = 0
+        for producto in inventario[categoria]:
+            suma += producto["cantidad"]
+        suma_total[categoria] = suma
+    return suma_total
