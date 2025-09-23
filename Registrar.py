@@ -22,7 +22,8 @@ def agregar_inventario():
         verificar_año()
         verificar_mes()
         
-        # BIBLIOTECA
+        # BIBLIOTECA 
+        #fecha
 
         print("¡¡¡Producto/s agregado/s con éxito!!!")
         productos_a_registrar -= 1
@@ -31,8 +32,7 @@ def agregar_inventario():
         print("No hay nada por agregar.")
 
 
-
-
+fecha = []
 # DÍA / MES / AÑO
 
 def verificar_dia():
@@ -45,6 +45,7 @@ def verificar_dia():
                 print("El dia tiene que estar entre 1-31")
         except ValueError:
             print("Por favor, ingrese solo numeros enteros")
+        fecha.append(d)
 def verificar_mes():
     while True:
         try:
@@ -55,6 +56,7 @@ def verificar_mes():
                 print("El mes tiene que estar entre 1 y 12")
         except ValueError:
             print("Por favor, ingrese solo numeros enteros")
+        fecha.append(m)
 def verificar_año():
     while True:
         try:
@@ -65,3 +67,4 @@ def verificar_año():
                 print("El año tiene que ser mayor a 0")
         except ValueError:
             print("Por favor, ingrese solo numeros enteros")
+        fecha.append(a)
