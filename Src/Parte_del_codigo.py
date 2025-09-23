@@ -5,20 +5,36 @@ def agregar_inventario():
 
     for categoria in categorias:
         try:
-            cantidad = int(input(f"\nCuantos productos de \"{categoria}\" quiere registrar: "))
+            cantidad = int(input(f"\n¿Cuántos productos de \"{categoria}\" quiere registrar?: "))
         except ValueError:
             cantidad = 0
         inventario[categoria] = []  
+
         if cantidad > 0:
             for i in range(cantidad):
                 nombre = input("\nNombre del producto: ")
                 try:
-                    piezas = int(input("Cantidad: "))
+                    piezas = int(input("Cantidad en stock: "))
                 except ValueError:
                     piezas = 0
-                inventario[categoria].append({"nombre": nombre, "cantidad": piezas})
+                try:
+                    minimo = int(input("¿Cantidad mínima para resurtido?: "))
+                except ValueError:
+                    minimo = 0
+                inventario[categoria].append({
+                    "nombre": nombre,
+                    "cantidad": piezas,
+                    "minimo": minimo
+                })
+                if piezas <= minimo:
+                    print(f"AVISO: '{nombre}' tiene {piezas} unidades. Es necesario resurtir (mínimo {minimo}).")
+                else:
+                    print(f"'{nombre}' registrado con {piezas} unidades (mínimo {minimo}).")
+
             print("\n¡Sus productos fueron registrados exitosamente!")
     return inventario
+
+
 
 def suma(inventario):
     categorias = ["frios", "snacks", "enlatados", "limpieza", "mascotas", "calientes"]
