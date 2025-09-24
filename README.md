@@ -6,17 +6,18 @@
 # Junior: Gaytan Alvarez Gerardo y Robles Sinecio Axel Usiel
 
 **Diego Alejandro Herrera Gutiérrez**
-**Participiacion:**Responsable de la coordinacion del proyecto, revision del codigo, pruebas y programa principal
+**Participiacion:**Responsable de la coordinacion del proyecto, revision del codigo, pruebas y programa principal.
 8 Commits
 **Regina Hernandez Hernandez**
-**Participacion:**Encargada de la funcion del inventario 
+**Participacion:**Encargada de la funcion del inventario y actualizar inventario.
 4 Commits
 **Diego Martínez Millán**
-**Participacion:**Encargado del diagrama de flujo, menu y de la funcion de resurtir inventario
+**Participacion:**Encargado del diagrama de flujo, menu y de la funcion de resurtir inventario.
 12 Commits
 **Gerardo Gaytan Alvarez**
-**Participacio:**Encargado de la funcion de editar y eliminar
+**Participacio:**Encargado de la funcion de eliminar.
 2 Commits
 **Axel Usiel Robles Sinecio**
-**Participacion:**Encargado del README y funcion buscar
+**Participacion:**Encargado del README y funcion buscar.
 3 Commits
+
