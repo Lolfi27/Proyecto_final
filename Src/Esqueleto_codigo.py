@@ -1,4 +1,21 @@
 # Preguntar si se modificara un inventario ya existente o se creara uno nuevo
+inventario=[]
+#####################################################
+# ===== Utilidades =====
+def normalizar(texto):
+    return texto.strip().lower()
+
+def eliminar_objeto():
+    if not inventario:
+        print("\n> No hay objetos registrados.")
+        return
+
+    objeto_borrar = normalizar(input("Ingrese objeto "))
+    for objeto in inventario:
+        if normalizar(objeto["Objeto"]) == objeto_borrar:
+            inventario.remove(objeto)
+            print("Objeto eliminado.")
+            return
 
 # Ingresar la cantidad total de objetos:
 objetos_a_registrar = int(input("Cuantos objetos se van a registrar"))
