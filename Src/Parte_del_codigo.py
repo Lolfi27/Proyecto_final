@@ -21,35 +21,41 @@ def agregar_inventario():
                     minimo = int(input("¿Cantidad mínima para resurtido?: "))
                 except ValueError:
                     minimo = 0
+                try:
+                    precio = float(input("Precio del producto: $"))
+                except ValueError:
+                    precio = 0.0
+
                 inventario[categoria].append({
                     "nombre": nombre,
                     "cantidad": piezas,
-                    "minimo": minimo
+                    "minimo": minimo,
+                    "precio": precio
                 })
-                if piezas <= minimo:
-                    print(f"AVISO: '{nombre}' tiene {piezas} unidades. Es necesario resurtir (mínimo {minimo}).")
-                else:
-                    print(f"'{nombre}' registrado con {piezas} unidades (mínimo {minimo}).")
 
             print("\n¡Sus productos fueron registrados exitosamente!")
     return inventario
 
 
-
-def suma(inventario):
+def mostrar_inventario(inventario):  
     categorias = ["frios", "snacks", "enlatados", "limpieza", "mascotas", "calientes"]
     
     for categoria in categorias:
         suma_total = 0
-        for producto in inventario[categoria]:
-            suma_total += producto["cantidad"]
-        
-        print("Categoria:", categoria)
-        print("Suma total:", suma_total)
+        print(f"\nCategoría: {categoria}")
         
         productos = inventario[categoria]
         if len(productos) == 0:
             print("No hay productos registrados")
         else:
             for producto in productos:
-                print(f"- {producto['nombre']}: {producto['cantidad']}")
+                suma_total += producto["cantidad"]
+                print(f"- {producto['nombre']} | Cantidad: {producto['cantidad']} | "
+                      f"Precio: ${producto['precio']:.2f} | Mínimo: {producto['minimo']}")
+                
+                if producto["cantidad"] < producto["minimo"]:
+                    print(f"   >> ALERTA: '{producto['nombre']}' tiene {producto['cantidad']} unidades "
+                          f"(mínimo {producto['minimo']}).")
+
+        print(f"Total de piezas en categoría '{categoria}': {suma_total}")
+    
