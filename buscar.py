@@ -1,22 +1,24 @@
-inventario = []
 def buscar_producto(busqueda):
     resultados = []
+    inventario = []
     for producto in inventario:
         if busqueda.lower() in producto["nombre"].lower():
             resultados.append(producto)
-        return resultados
-    
-while True:
-        buscarP  = input("Nombre del producto a buscar: ")
-        if buscarP.lower() == "Salir":
-            print("Saliendo del buscador...")
-            break
+    return resultados  
 
-        encontrados = buscar_producto(buscarP)
-        if encontrados:
-            print("Producto encontrado: ")
-            if p in encontrados:
-               print(f"- {p{'nombre'}} | Precio: ${p['precio']}")
-        else:
-            print("No se encontro  el producto")
-        
+
+while True:
+    buscarP = input("Nombre del producto a buscar (o 'salir' para terminar): ")
+    if buscarP.lower() == "salir":  
+        print("Saliendo del buscador...")
+        break
+
+    encontrados = buscar_producto(buscarP)
+    if encontrados:
+        print("Productos encontrados:")
+        for producto in encontrados:
+            print(f"- {producto['nombre']} | Cantidad: {producto['cantidad']} | Fecha: {producto['fecha']['dia']}/{producto['fecha']['mes']}/{producto['fecha']['año']}")
+    else:
+        print("No se encontró el producto")
+
+
