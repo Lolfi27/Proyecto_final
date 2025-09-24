@@ -62,23 +62,55 @@ def mostrar_inventario(inventario):
 
         print(f"Total de piezas en categoría '{categoria}': {suma_total}")
     
+    
 def actualizar(inventario):
-    producto_actualizar = input("\n¿A qué objeto desea actualizar su cantidad?: ").lower()
+    product_actualizar = input("\n¿Qué objeto desea actualizar?: ").lower().strip()
+
     for categoria, productos in inventario.items():
         for producto in productos:
-            if producto["nombre"].lower() == producto_actualizar:
+            if producto["nombre"].lower() == product_actualizar:
 
-                try:
-                    numero = int(input("Ingresar nueva cantidad: "))
-                    producto["cantidad"] = numero
-                    print("\nActualizado con éxito\n")
-                    return 
-                
-                except ValueError:
-                    print("\nFavor de escribir un número entero\n")
-                    return 
-    else:
-        print("\nNo hay ningún producto con ese nombre")
+                while True:
+                    numero = input("¿Desea actualizar su cantidad? (s/n): ").lower().strip()
+                    if numero == "s":
+                        try:
+                            nuevo_numero = int(input("Ingresar nueva cantidad: "))
+                            producto["cantidad"] = nuevo_numero
+                            print("\nActualizado con éxito.\n")
+                        except ValueError:
+                            print("Favor de escribir un número entero")
+                        
+                        break
+                    elif numero == "n":
+                        print("No hay ninguna cantidad por actualizar")
+                        break
+                    else:
+                        print("Respuesta no válida, favor de escribir 's' o 'n'.")
+
+                while True:
+                    precio = input("¿Desea actualizar el precio? (s/n): ").lower().strip()
+                    if precio == "s":
+                        try:
+                            nuevo_precio = float(input("Ingresar nuevo precio: "))
+                            producto["precio"] = nuevo_precio
+                            print("Precio actualizado con éxito.")
+                        except ValueError:
+                            print("Favor de escribir solamente el número")
+                        break
+                    elif precio == "n":
+                        print("No hay ningún precio por actualizar...!")
+                        break
+                    else:
+                        print("Respuesta no válida, favor de escribir 's' o 'n'.")
+
+                if producto["cantidad"] < producto["minimo"]:
+                    print(f"   >> ALERTA: '{producto['nombre']}' tiene {producto['cantidad']} unidades "
+                          f"(mínimo {producto['minimo']}).")
+
+                return
+
+    
+    print("\nNo hay ningún producto con ese nombre.")
 
 def buscar_producto(inventario, busqueda):
     resultados = []
