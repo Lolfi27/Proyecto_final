@@ -134,9 +134,47 @@ def eliminar_objeto(inventario):
                 return
     print("No se encontró el producto a eliminar.")
 
-def menu():
-    inventario = {}  
+def creador_de_archivo(nombre_archivo = ""): 
+    if nombre_archivo == "":
+            nombre_archivo = input("Con que nombre desea llamar el archivo?\n").strip()
+            archivo = (f"{nombre_archivo}.txt")
+    try:
+            with open(archivo,"x", encoding="utf-8") as file:
+                pass
+            print(f"Archivo '{archivo}' creado con exito.")
+    except FileExistsError:
+        print(f"Archivo {archivo} ya existe")
+        modificar = input("Desea modifica el contenido del archivo? (s/n)\n").strip().lower()
+        if modificar != "s":
+            sobreescribir = input("Desea sobrescribir el archivo? (s/n)\n").strip().lower()
+            if sobreescribir == "s":
+                with open(f"{archivo}.txt","w",encoding="utf-8") as file:
+                    pass
+                print(f"Archivo {archivo} sobreescrito.")
+            else:
+                print(f"Archivo {archivo} sin cambios")
+        return archivo
+    
+def guardar_inventario(inventario, nombre_archivo):
+    with open(nombre_archivo, "w", encoding="utf-8") as file:
+        file.write(str(inventario))
 
+
+def cargar_inventario(nombre_archivo):
+    try:
+        with open(nombre_archivo, "r", encoding="utf-8") as file:
+            contenido = file.read().strip()
+            if contenido:
+                return eval(contenido)  
+    except FileNotFoundError:
+        pass  
+    return {"frios": [], "snacks": [], "enlatados": [], "limpieza": [], "mascotas": [], "calientes": []}
+
+
+archivo_inventario = creador_de_archivo()
+inventario = cargar_inventario(archivo_inventario)
+
+def menu():
     while True:
         print("\n===== MENÚ DE INVENTARIO =====")
         print("1. Agregar productos")
@@ -150,6 +188,7 @@ def menu():
 
         if opcion == "1":
             inventario = agregar_inventario()
+            guardar_inventario(inventario,archivo_inventario)
         elif opcion == "2":
             if inventario:
                 mostrar_inventario(inventario)
@@ -158,8 +197,7 @@ def menu():
         elif opcion == "3":
             if inventario:
                 actualizar(inventario)
-            else:
-                print("Inventario vacío.")
+                guardar_inventario(inventario,archivo_inventario)
         elif opcion == "4":
             if inventario:
                 buscarP = input("Nombre del producto a buscar: ")
@@ -170,15 +208,13 @@ def menu():
                         print(f"- {producto['nombre']} | Cantidad: {producto['cantidad']} | Categoría: {categoria}")
                 else:
                     print("No se encontró el producto")
-            else:
-                print("Inventario vacío.")
         elif opcion == "5":
             if inventario:
                 eliminar_objeto(inventario)
-            else:
-                print("Inventario vacío.")
+                guardar_inventario(inventario, archivo_inventario)
         elif opcion == "6":
-            print("¡Gracias por usar nuestro porgrama!")
+            print("¡Gracias por usar nuestro programa!")
+            guardar_inventario(inventario, archivo_inventario)
             break
         else:
             print("Opción no válida. Intente de nuevo.")
