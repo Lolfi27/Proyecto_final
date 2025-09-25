@@ -135,27 +135,29 @@ def eliminar_objeto(inventario):
                 return
     print("No se encontró el producto a eliminar.")
 
-def creador_de_archivo(nombre_archivo = ""): 
-    nombre_archivo = input("Cual es el nombre del archivo?\n").strip()
+def creador_de_archivo(nombre_archivo=""): 
     if nombre_archivo == "":
-            archivo = (f"{nombre_archivo}.txt")
+        nombre_archivo = input("Cual es el nombre del archivo?\n").strip()
+        if nombre_archivo == "":
+            nombre_archivo = "inventario"   
+    archivo = f"{nombre_archivo}.txt"
     try:
-            with open(archivo,"x", encoding="utf-8") as file:
-                pass
-            print(f"Archivo '{archivo}' creado con exito.")
+        with open(archivo, "x", encoding="utf-8") as file:
+            pass
+        print(f"Archivo '{archivo}' creado con exito.")
     except FileExistsError:
         print(f"Archivo {archivo} ya existe")
         modificar = input("Desea modifica el contenido del archivo? (s/n)\n").strip().lower()
         if modificar != "s":
             sobreescribir = input("Desea sobrescribir el archivo? (s/n)\n").strip().lower()
             if sobreescribir == "s":
-                with open(archivo,"w",encoding="utf-8") as file:
+                with open(archivo, "w", encoding="utf-8") as file:
                     pass
                 print(f"Archivo {archivo} sobreescrito.")
             else:
                 print(f"Archivo {archivo} sin cambios")
     return archivo
-    
+
 def guardar_inventario(inventario, nombre_archivo):
     with open(nombre_archivo.replace(".txt",".json"),"w",encoding="utf-8")as file:
         json.dump(inventario,file,indent=4,ensure_ascii=False)
