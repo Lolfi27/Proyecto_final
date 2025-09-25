@@ -1,3 +1,4 @@
+import json
 def normalizar(texto):
     return texto.strip().lower()
 
@@ -136,7 +137,7 @@ def eliminar_objeto(inventario):
 
 def creador_de_archivo(nombre_archivo = ""): 
     if nombre_archivo == "":
-            nombre_archivo = input("Con que nombre desea llamar el archivo?\n").strip()
+            nombre_archivo = input("Cual es el nombre del archivo?\n").strip()
             archivo = (f"{nombre_archivo}.txt")
     try:
             with open(archivo,"x", encoding="utf-8") as file:
@@ -153,23 +154,30 @@ def creador_de_archivo(nombre_archivo = ""):
                 print(f"Archivo {archivo} sobreescrito.")
             else:
                 print(f"Archivo {archivo} sin cambios")
-        return archivo
+    return archivo
     
 def guardar_inventario(inventario, nombre_archivo):
+    with open(nombre_archivo.replace(".txt",".json"),"w",encoding="utf-8")as file:
+        json.dump(inventario,file,indent=4,ensure_ascii=False)
+    
     with open(nombre_archivo, "w", encoding="utf-8") as file:
-        file.write(str(inventario))
+        for categoria,productos in inventario.items():
+            file.write(f"\n==== {categoria.upper()} ====\n")
+            if not productos:
+                file.write("No hay productos en existencia\n")
+            for producto in productos:
+                file.write(f"Nombre: {producto['nombre']}\n Cantidad: {producto['cantidad']}\n Precio: ${producto['precio']}\nMínimo: {producto['minimo']}\n-------------\n")
 
 
 def cargar_inventario(nombre_archivo):
     try:
-        with open(nombre_archivo, "r", encoding="utf-8") as file:
-            contenido = file.read().strip()
-            if contenido:
-                return eval(contenido)  
-    except FileNotFoundError:
-        pass  
-    return {"frios": [], "snacks": [], "enlatados": [], "limpieza": [], "mascotas": [], "calientes": []}
+        with open(nombre_archivo.replace(".txt",".json"),"r",encoding="utf-8")as file:
+            return json.load(file)          
+    except (FileNotFoundError, json.JSONDecodeError):
+        return inventario_vacio()
 
+def inventario_vacio():
+    return {"frios": [], "snacks": [], "enlatados": [], "limpieza": [], "mascotas": [], "calientes": []}
 
 archivo_inventario = creador_de_archivo()
 inventario = cargar_inventario(archivo_inventario)
@@ -190,15 +198,18 @@ def menu():
             inventario = agregar_inventario()
             guardar_inventario(inventario,archivo_inventario)
         elif opcion == "2":
+            inventario = cargar_inventario(archivo_inventario)
             if inventario:
                 mostrar_inventario(inventario)
             else:
                 print("Inventario vacío.")
         elif opcion == "3":
+            inventario = cargar_inventario(archivo_inventario)
             if inventario:
                 actualizar(inventario)
                 guardar_inventario(inventario,archivo_inventario)
         elif opcion == "4":
+            inventario = cargar_inventario(archivo_inventario)
             if inventario:
                 buscarP = input("Nombre del producto a buscar: ")
                 encontrados = buscar_producto(inventario, buscarP)
@@ -209,13 +220,20 @@ def menu():
                 else:
                     print("No se encontró el producto")
         elif opcion == "5":
+            inventario = cargar_inventario(archivo_inventario)
             if inventario:
                 eliminar_objeto(inventario)
                 guardar_inventario(inventario, archivo_inventario)
         elif opcion == "6":
-            print("¡Gracias por usar nuestro programa!")
-            guardar_inventario(inventario, archivo_inventario)
-            break
+            if not inventario:
+                inventario = inventario_vacio()
+                guardar_inventario(inventario, archivo_inventario)
+                print("¡Gracias por usar nuestro programa!")
+                break
+            else:
+                guardar_inventario(inventario, archivo_inventario)
+                print("¡Gracias por usar nuestro programa!")
+                break
         else:
             print("Opción no válida. Intente de nuevo.")
 menu()
