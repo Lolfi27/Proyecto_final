@@ -136,8 +136,8 @@ def eliminar_objeto(inventario):
     print("No se encontró el producto a eliminar.")
 
 def creador_de_archivo(nombre_archivo = ""): 
+    nombre_archivo = input("Cual es el nombre del archivo?\n").strip()
     if nombre_archivo == "":
-            nombre_archivo = input("Cual es el nombre del archivo?\n").strip()
             archivo = (f"{nombre_archivo}.txt")
     try:
             with open(archivo,"x", encoding="utf-8") as file:
@@ -149,7 +149,7 @@ def creador_de_archivo(nombre_archivo = ""):
         if modificar != "s":
             sobreescribir = input("Desea sobrescribir el archivo? (s/n)\n").strip().lower()
             if sobreescribir == "s":
-                with open(f"{archivo}.txt","w",encoding="utf-8") as file:
+                with open(archivo,"w",encoding="utf-8") as file:
                     pass
                 print(f"Archivo {archivo} sobreescrito.")
             else:
