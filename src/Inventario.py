@@ -39,11 +39,11 @@ def agregar_inventario(inventario):
                         existe = True
                         print(f"Producto '{nombre}' ya existía. Se actualizó la información.")
                         break
-                    if not existe:
-                        inventario[categoria].append({
-                        "nombre": nombre,
-                        "cantidad": piezas,
-                        "minimo": minimo,
+                if not existe:
+                    inventario[categoria].append({
+                    "nombre": nombre,
+                    "cantidad": piezas,
+                    "minimo": minimo,
                         "precio": precio
                 })
 
@@ -58,7 +58,7 @@ def mostrar_inventario(inventario):
         suma_total = 0
         print(f"\nCategoría: {categoria}")
         
-        productos = inventario[categoria]
+        productos = inventario.get(categoria,[])
         if len(productos) == 0:
             print("No hay productos registrados")
         else:
@@ -221,7 +221,10 @@ def guardar_inventario(inventario, nombre_archivo):
             if not productos:
                 file.write("No hay productos en existencia\n")
             for producto in productos:
-                file.write(f"Nombre: {producto['nombre']}\n Cantidad: {producto['cantidad']}\n Precio: ${producto['precio']}\nMínimo: {producto['minimo']}\n-------------\n")
+                file.write(f"Nombre: {producto['nombre']}\n" 
+                           f"Cantidad: {producto['cantidad']}\n"
+                           f"Precio: ${producto['precio']:.2f}\n"
+                           f"Mínimo: {producto['minimo']}\n-------------\n")
 
 
 def cargar_inventario(nombre_archivo):
