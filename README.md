@@ -21,3 +21,12 @@
 **Participacion:**Encargado del README y funcion buscar.
 3 Commits
 
+
+**Instrucciones para su instalacion**
+**1.- Descarga python 3 desde tu laptop/PC de escritorio**
+**2.- Una vez descargado, desde git hub haz CLICK donde dice CODE**
+**3.- Hasta abajo dira ´Download ZIP´ haz click ahi**
+**4.- Una vez descargado, abre el archivo y lee el repositorio**
+**5.-listo**
+
+
