@@ -187,7 +187,7 @@ def eliminar_objeto(inventario):
                 print(f"Producto '{producto['nombre']}' eliminado de la categoría '{categoria}'.")
                 return
     print("No se encontró el producto a eliminar.")
-
+#el creador evita que se duplique un archivo existente
 def creador_de_archivo(nombre_archivo=""): 
     if nombre_archivo == "":
         nombre_archivo = input("Cual es el nombre del archivo?\n").strip()
@@ -226,7 +226,7 @@ def guardar_inventario(inventario, nombre_archivo):
                            f"Precio: ${producto['precio']:.2f}\n"
                            f"Mínimo: {producto['minimo']}\n-------------\n")
 
-
+#permite que la computadora lea un archivo clon de el text file del usuario en formato Json, de manera que nunca crashee
 def cargar_inventario(nombre_archivo):
     try:
         with open(nombre_archivo.replace(".txt",".json"),"r",encoding="utf-8")as file:
