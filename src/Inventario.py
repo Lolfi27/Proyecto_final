@@ -2,13 +2,13 @@ import json
 def normalizar(texto):
     return texto.strip().lower()
 
-def agregar_inventario():
+def agregar_inventario(inventario):
     categorias = ["frios", "snacks", "enlatados", "limpieza", "mascotas", "calientes"]
 
     for categoria in categorias:
         try:
             cantidad = int(input(f"\n¿Cuántos productos de \"{categoria}\" quiere registrar?: "))
-        except ValueError or cantidad <= 0:
+        except ValueError:
             cantidad = 0
 
         if categoria not in inventario:
@@ -19,18 +19,18 @@ def agregar_inventario():
                 nombre = input("\nNombre del producto: ")
                 try:
                     piezas = int(input("Cantidad en stock: "))
-                except ValueError or cantidad <= 0:
+                except ValueError:
                     piezas = 0
                 try:
                     minimo = int(input("¿Cantidad mínima para resurtido?: "))
-                except ValueError or cantidad <= 0:
+                except ValueError:
                     minimo = 0
                 try:
                     precio = float(input("Precio del producto: $"))
-                except ValueError or cantidad <= 0:
+                except ValueError:
                     precio = 0.0
 
-                    existe = False
+                existe = False
                 for producto in inventario[categoria]:
                     if producto["nombre"].lower() == nombre.lower():
                         producto["cantidad"] += piezas  
@@ -39,11 +39,11 @@ def agregar_inventario():
                         existe = True
                         print(f"Producto '{nombre}' ya existía. Se actualizó la información.")
                         break
-                    if not existe:
-                        inventario[categoria].append({
-                        "nombre": nombre,
-                        "cantidad": piezas,
-                        "minimo": minimo,
+                if not existe:
+                    inventario[categoria].append({
+                    "nombre": nombre,
+                    "cantidad": piezas,
+                    "minimo": minimo,
                         "precio": precio
                 })
 
@@ -58,7 +58,7 @@ def mostrar_inventario(inventario):
         suma_total = 0
         print(f"\nCategoría: {categoria}")
         
-        productos = inventario[categoria]
+        productos = inventario.get(categoria,[])
         if len(productos) == 0:
             print("No hay productos registrados")
         else:
@@ -77,10 +77,12 @@ def mostrar_inventario(inventario):
 def actualizar(inventario):
     product_actualizar = input("\n¿Qué objeto desea actualizar?: ").lower().strip()
 
+    # Se empiezan a recorrer las categorías
     for categoria, productos in inventario.items():
         for producto in productos:
             if producto["nombre"].lower() == product_actualizar:
 
+                # ACTUALIZAR CANTIDAD
                 while True:
                     numero = input("¿Desea actualizar su cantidad? (s/n): ").lower().strip()
                     if numero == "s":
@@ -98,6 +100,7 @@ def actualizar(inventario):
                     else:
                         print("Respuesta no válida, favor de escribir 's' o 'n'.")
 
+                # ACTUALIZAR PRECIO
                 while True:
                     precio = input("¿Desea actualizar el precio? (s/n): ").lower().strip()
                     if precio == "s":
@@ -113,12 +116,49 @@ def actualizar(inventario):
                         break
                     else:
                         print("Respuesta no válida, favor de escribir 's' o 'n'.")
+                
+                # ACTUALIZAR MÍNIMO
+                while True:
+                    minimo = input("\n¿Desea actualizar el mínimo de productos? (s/n): ").lower().strip()
+                    if minimo == "s":
+                        try:
+                            nuevo_minimo = int(input("Ingresar nuevo mínimo: "))
+                            producto["minimo"] = nuevo_minimo
+                            print("\nActualizado con éxito.")
+                        except ValueError:
+                            print("Favor de escribir un número entero")
+                        break
+                    elif minimo == "n":
+                        print("\nNo hay nada por actualizar...!")
+                        break
+                    else:
+                        print("\nRespuesta no válida, favor de escribir 's' o 'n'.")
 
+
+
+                # Alerta de que se está quedando sin stock
                 if producto["cantidad"] < producto["minimo"]:
                     print(f"   >> ALERTA: '{producto['nombre']}' tiene {producto['cantidad']} unidades "
                           f"(mínimo {producto['minimo']}).")
+                    
+                    #ACTUALIZAR MÍNIMO
+                    while True:
+                        minimo = input("\n¿Desea actualizar el mínimo de productos? (s/n): ").lower().strip()
+                        if minimo == "s":
+                            try:
+                                nuevo_minimo = int(input("Ingresar nuevo mínimo: "))
+                                producto["minimo"] = nuevo_minimo
+                                print("\nActualizado con éxito.")
+                            except ValueError:
+                                print("Favor de escribir un número entero")
+                            break
+                        elif minimo == "n":
+                            print("\nNo hay nada por actualizar...!")
+                            break
+                        else:
+                            print("\nRespuesta no válida, favor de escribir 's' o 'n'.")
 
-                return
+                return  # salir después de actualizar un producto
 
     
     print("\nNo hay ningún producto con ese nombre.")
@@ -129,6 +169,9 @@ def buscar_producto(inventario, busqueda):
         for producto in productos:
             if busqueda.lower() in producto["nombre"].lower():
                 resultados.append((categoria, producto))
+                if producto["cantidad"] < producto["minimo"]:
+                    print(f"   >> ALERTA: '{producto['nombre']}' tiene {producto['cantidad']} unidades "
+                          f"(mínimo {producto['minimo']}).")
     return resultados  
 
 def eliminar_objeto(inventario):
@@ -178,7 +221,10 @@ def guardar_inventario(inventario, nombre_archivo):
             if not productos:
                 file.write("No hay productos en existencia\n")
             for producto in productos:
-                file.write(f"Nombre: {producto['nombre']}\n Cantidad: {producto['cantidad']}\n Precio: ${producto['precio']}\nMínimo: {producto['minimo']}\n-------------\n")
+                file.write(f"Nombre: {producto['nombre']}\n" 
+                           f"Cantidad: {producto['cantidad']}\n"
+                           f"Precio: ${producto['precio']:.2f}\n"
+                           f"Mínimo: {producto['minimo']}\n-------------\n")
 
 
 def cargar_inventario(nombre_archivo):
@@ -192,9 +238,9 @@ def inventario_vacio():
     return {"frios": [], "snacks": [], "enlatados": [], "limpieza": [], "mascotas": [], "calientes": []}
 
 archivo_inventario = creador_de_archivo()
-inventario = cargar_inventario(archivo_inventario)
 
 def menu():
+    inventario = cargar_inventario(archivo_inventario)
     while True:
         print("\n===== MENÚ DE INVENTARIO =====")
         print("1. Agregar productos")
