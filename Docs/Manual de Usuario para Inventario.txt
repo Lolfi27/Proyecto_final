@@ -1,0 +1,25 @@
+===Manual de Usuario para Inventario===
+-1. Creación de archivo via Terminal
+Extraera el archivo .zip que ya descargo (Proyecto_Final-main) [Click derecho en el archivo .zip, extraer todo] para después
+borrar el archivo.zip
+
+-Con el código ya descargado, abrirá una terminal integrada, con su buscador de Windows "Windows PowerShell"
+buscara la ruta en la cual tiene su archivo (en este caso descargas, a menos de que lo mueva manualmente a otro lado)
+para esto, dentro de la terminal escribirá:
+
+cd .\Downloads\Proyecto_final-main\src\
+(dará enter para confirmar)
+
+-seguido escribirá:
+Python Inventario.py
+
+-Al momento de ejecutar el código, se solicitara el nombre con el cual va a llamar su inventario, y se guardara su archivo donde este el archivo Inventario.py, por si desea hacer cambios a un mismo inventario
+
+
+
+-2. Creación de archivo vía ejecución directa
+
+-Dentro de las descargas, extraerá la carpeta .zip que ha descargado
+Dentro de la carpeta extraída, se meterá a la carpeta src y dará click al archivo "Inventario.py"
+
+

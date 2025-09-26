@@ -3,38 +3,48 @@ def normalizar(texto):
     return texto.strip().lower()
 
 def agregar_inventario():
-    inventario = {}
-
     categorias = ["frios", "snacks", "enlatados", "limpieza", "mascotas", "calientes"]
 
     for categoria in categorias:
         try:
             cantidad = int(input(f"\n¿Cuántos productos de \"{categoria}\" quiere registrar?: "))
-        except ValueError:
+        except ValueError or cantidad <= 0:
             cantidad = 0
-        inventario[categoria] = []  
+
+        if categoria not in inventario:
+            inventario[categoria] = []  
 
         if cantidad > 0:
             for i in range(cantidad):
                 nombre = input("\nNombre del producto: ")
                 try:
                     piezas = int(input("Cantidad en stock: "))
-                except ValueError:
+                except ValueError or cantidad <= 0:
                     piezas = 0
                 try:
                     minimo = int(input("¿Cantidad mínima para resurtido?: "))
-                except ValueError:
+                except ValueError or cantidad <= 0:
                     minimo = 0
                 try:
                     precio = float(input("Precio del producto: $"))
-                except ValueError:
+                except ValueError or cantidad <= 0:
                     precio = 0.0
 
-                inventario[categoria].append({
-                    "nombre": nombre,
-                    "cantidad": piezas,
-                    "minimo": minimo,
-                    "precio": precio
+                    existe = False
+                for producto in inventario[categoria]:
+                    if producto["nombre"].lower() == nombre.lower():
+                        producto["cantidad"] += piezas  
+                        producto["precio"] = precio      
+                        producto["minimo"] = minimo      
+                        existe = True
+                        print(f"Producto '{nombre}' ya existía. Se actualizó la información.")
+                        break
+                    if not existe:
+                        inventario[categoria].append({
+                        "nombre": nombre,
+                        "cantidad": piezas,
+                        "minimo": minimo,
+                        "precio": precio
                 })
 
             print("\n¡Sus productos fueron registrados exitosamente!")
@@ -197,8 +207,9 @@ def menu():
         opcion = input("\nSeleccione una opción: ")
 
         if opcion == "1":
-            inventario = agregar_inventario()
-            guardar_inventario(inventario,archivo_inventario)
+            inventario = cargar_inventario(archivo_inventario)
+            inventario = agregar_inventario(inventario)  
+            guardar_inventario(inventario, archivo_inventario)
         elif opcion == "2":
             inventario = cargar_inventario(archivo_inventario)
             if inventario:
