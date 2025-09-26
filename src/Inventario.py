@@ -2,13 +2,13 @@ import json
 def normalizar(texto):
     return texto.strip().lower()
 
-def agregar_inventario():
+def agregar_inventario(inventario):
     categorias = ["frios", "snacks", "enlatados", "limpieza", "mascotas", "calientes"]
 
     for categoria in categorias:
         try:
             cantidad = int(input(f"\n¿Cuántos productos de \"{categoria}\" quiere registrar?: "))
-        except ValueError or cantidad <= 0:
+        except ValueError:
             cantidad = 0
 
         if categoria not in inventario:
@@ -19,18 +19,18 @@ def agregar_inventario():
                 nombre = input("\nNombre del producto: ")
                 try:
                     piezas = int(input("Cantidad en stock: "))
-                except ValueError or cantidad <= 0:
+                except ValueError:
                     piezas = 0
                 try:
                     minimo = int(input("¿Cantidad mínima para resurtido?: "))
-                except ValueError or cantidad <= 0:
+                except ValueError:
                     minimo = 0
                 try:
                     precio = float(input("Precio del producto: $"))
-                except ValueError or cantidad <= 0:
+                except ValueError:
                     precio = 0.0
 
-                    existe = False
+                existe = False
                 for producto in inventario[categoria]:
                     if producto["nombre"].lower() == nombre.lower():
                         producto["cantidad"] += piezas  
@@ -169,6 +169,9 @@ def buscar_producto(inventario, busqueda):
         for producto in productos:
             if busqueda.lower() in producto["nombre"].lower():
                 resultados.append((categoria, producto))
+                if producto["cantidad"] < producto["minimo"]:
+                    print(f"   >> ALERTA: '{producto['nombre']}' tiene {producto['cantidad']} unidades "
+                          f"(mínimo {producto['minimo']}).")
     return resultados  
 
 def eliminar_objeto(inventario):
@@ -232,9 +235,9 @@ def inventario_vacio():
     return {"frios": [], "snacks": [], "enlatados": [], "limpieza": [], "mascotas": [], "calientes": []}
 
 archivo_inventario = creador_de_archivo()
-inventario = cargar_inventario(archivo_inventario)
 
 def menu():
+    inventario = cargar_inventario(archivo_inventario)
     while True:
         print("\n===== MENÚ DE INVENTARIO =====")
         print("1. Agregar productos")
