@@ -23,3 +23,10 @@ Python Inventario.py
 Dentro de la carpeta extraída, se meterá a la carpeta src y dará click al archivo "Inventario.py"
 
 
+El programa es bastante intuitivo, las opciones mostradas por el menu desglosan a profundidad cada acción para asegurarse que es 
+simple y sencillo de utilizar
+
+Para futuros cambios, editar el archivo creado por el programa, o volver a ejecutar el programa con el nombre del mismo archivo
+sera más que suficiente para efecutar cambios
+
+
